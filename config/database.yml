@@ -61,6 +61,9 @@ development:
 test:
   <<: *default
   database: Reciepe_App_test
+  port: 5433
+  username: postgres
+  password: 12345678
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
