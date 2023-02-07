@@ -1,0 +1,20 @@
+
+<%= link_to recipe_path(recipe.id), class:'link-container'   do %>
+  <div class="card-body">
+    <img src="<%= recipe.photo %>" class="card-img-top responsive-img" alt="Recipe Image">
+    <h5 class="card-title"><%= recipe.name %></h5>
+    <p class="card-text"><%= recipe.description %></p>
+    <p class="card-text">Quantity: <%= recipe.recipe_foods.length %></p>
+    <% if recipe.recipe_foods.length == 0%>
+    <p class="card-text">Total Price: <%= recipe.recipe_foods.length %></p>
+    <% else %>
+      <% price = 0 %>
+      <% recipe.recipe_foods.each do |food| %>
+        <% price += food.food.price %>
+      <% end %>
+      <p class="card-text">Total price: <%= price %></p>
+    <% end %>
+      <% updated = (Time.now.hour - recipe.updated_at.hour).minutes %>
+    <p class="card-text"><small class="text-muted">Last updated <%= updated %> mins ago</small></p>
+  </div>
+<% end %>
