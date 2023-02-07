@@ -5,22 +5,46 @@ class FoodsController < ApplicationController
     @foods = Food.where(user_id: current_user.id)
   end
 
-  def create
+  def create(*recipe_id)
     @user = current_user
-    @food = @user.foods.build(food_params)
-    if @food.valid?
-      @food.save
+    recipe_id = params[:format]
+    @food = Food.new(params.require(:new_food).permit(:name,:measurement_unit,:price,:quantity))
+    @food.user = @user
+    if @food.save
       flash[:notice] = 'Food created successfully!'
-      redirect_to new_user_food_path(@user, @food)
+      if recipe_id != nil
+        recipe_id = recipe_id.to_i
+        @recipe = Recipe.find(recipe_id)
+        @recipe_foods = RecipeFood.new(quantity:@food.quantity,food:@food,recipe:@recipe)
+        if @recipe_foods.save
+          flash[:notice] = 'Ingredient created successfully!'
+          return redirect_to recipe_path(:id => recipe_id)
+        else
+          flash[:error] = @recipe_foods.errors.full_messages.join(', ')
+          return redirect_to recipe_path(:id => recipe_id)
+        end
+      else
+        redirect_to root_path
+      end
     else
       flash[:error] = @food.errors.full_messages.join(', ')
-      render :new
+      food = Food.new
+      respond_to do |format|
+        format.html { redirect_to request.referrer, locals: { food: food } }
+      end
     end
   end
 
   def new
-    @food = Food.new
-    @post.user = current_user
+    food = Food.new
+    @recipe_id = if params[:recipe_id] != nil
+                   params[:recipe_id]
+                 else
+                  nil
+                 end
+    respond_to do |format|
+      format.html { render :new, locals: { food: food }  }
+    end
   end
 
   def destroy
