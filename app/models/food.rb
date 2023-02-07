@@ -3,4 +3,8 @@ class Food < ApplicationRecord
   has_many :recipe_food
 
   validates :name, presence: true, length: { minimum: 3, maximum: 15 }
+
+  def to_s
+    "#{quantity} #{measurement_unit} of #{name}"
+  end
 end

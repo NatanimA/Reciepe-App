@@ -61,7 +61,7 @@ development:
 test:
   <<: *default
   database: Reciepe_App_test
-  port: 5433
+  port: 5432
   username: teejay
   password: rojutet11
 
