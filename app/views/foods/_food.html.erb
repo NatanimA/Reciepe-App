@@ -1,0 +1,14 @@
+<tr>
+      <th scope="row">#<%= food.id %></th>
+      <td><%= food.name %></td>
+      <% if details %>
+      <td><%= food.quantity%></td>
+      <% else %>
+      <td><%= food.measurement_unit%></td>
+      <% end %>
+      <td><%= food.price %></td>
+      <td><%= link_to "Delete" %></td>
+      <% if details %>
+      <td><%= link_to "Modify" %></td>
+      <% end %>
+</tr>
