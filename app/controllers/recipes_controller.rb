@@ -1,16 +1,26 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: %i[show destroy]
+  before_action :set_recipe, only: %i[destroy]
   def index
-    @recipes = Recipe.where(user_id: params[:user_id]).includes(:food)
+    @recipes = Recipe.where(user_id: current_user.id).includes(:recipe_foods)
+  end
+
+  def public
+    @recipes = Recipe.where(user_id: current_user.id,public:true).includes(:recipe_foods)
   end
 
   def new
-    @recipe = Recipe.new
-    @recipe.user = current_user
+    recipe = Recipe.new
+    respond_to do |format|
+      format.html { render :new, locals:{ recipe:recipe }  }
+    end
   end
 
   def show
-    @recipe = Recipe.where(user_id: params[:user_id], id: params[:id]).includes(:food)
+    @recipe = Recipe.where(user_id: current_user.id, id: params[:id]).includes(:recipe_foods).first
+  end
+
+  def shoping
+    @recipe = Recipe.where(id: params[:id]).includes(:recipe_foods).first
   end
 
   def destroy
@@ -23,15 +33,18 @@ class RecipesController < ApplicationController
 
   def create
     @user = current_user
-    @recipe = @user.recipes.build(recipe_params)
-    if @recipe.valid?
-      @recipe.save
-
+    @recipe = Recipe.new(params.require(:new_recipe).permit(:name,:description,:preparation_time,:cooking_time,:public,:photo))
+    @recipe.user = @user
+    if @recipe.save
       flash[:notice] = 'Recipe created successfully!'
-      redirect_to new_user_recipe_path(@user, @recipe)
+      redirect_to recipes_path
     else
       flash[:error] = @recipe.errors.full_messages.join(', ')
-      render :new
+      puts "Error is in:  #{flash[:error]}"
+      recipe = Recipe.new
+      respond_to do |format|
+        format.html { redirect_to request.referrer, locals: { recipe:recipe }  }
+      end
     end
   end
 
@@ -42,6 +55,6 @@ class RecipesController < ApplicationController
   end
 
   def recipe_params
-    params.require(:recipe).permit(:name, :preparation_time, :cooking_time, :description, :public)
+    params.require(:recipe).permit(:name, :preparation_time, :cooking_time, :description, :public,:photo)
   end
 end
