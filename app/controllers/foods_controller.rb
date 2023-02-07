@@ -8,42 +8,37 @@ class FoodsController < ApplicationController
   def create(*recipe_id)
     @user = current_user
     recipe_id = params[:format]
-    @food = Food.new(params.require(:new_food).permit(:name,:measurement_unit,:price,:quantity))
+    @food = Food.new(params.require(:new_food).permit(:name, :measurement_unit, :price, :quantity))
     @food.user = @user
     if @food.save
       flash[:notice] = 'Food created successfully!'
-      if recipe_id != nil
+      if recipe_id.nil?
+        redirect_to root_path
+      else
         recipe_id = recipe_id.to_i
         @recipe = Recipe.find(recipe_id)
-        @recipe_foods = RecipeFood.new(quantity:@food.quantity,food:@food,recipe:@recipe)
+        @recipe_foods = RecipeFood.new(quantity: @food.quantity, food: @food, recipe: @recipe)
         if @recipe_foods.save
           flash[:notice] = 'Ingredient created successfully!'
-          return redirect_to recipe_path(:id => recipe_id)
         else
           flash[:error] = @recipe_foods.errors.full_messages.join(', ')
-          return redirect_to recipe_path(:id => recipe_id)
         end
-      else
-        redirect_to root_path
+        redirect_to recipe_path(id: recipe_id)
       end
     else
       flash[:error] = @food.errors.full_messages.join(', ')
       food = Food.new
       respond_to do |format|
-        format.html { redirect_to request.referrer, locals: { food: food } }
+        format.html { redirect_to request.referrer, locals: { food: } }
       end
     end
   end
 
   def new
     food = Food.new
-    @recipe_id = if params[:recipe_id] != nil
-                   params[:recipe_id]
-                 else
-                  nil
-                 end
+    @recipe_id = (params[:recipe_id] unless params[:recipe_id].nil?)
     respond_to do |format|
-      format.html { render :new, locals: { food: food }  }
+      format.html { render :new, locals: { food: } }
     end
   end
 

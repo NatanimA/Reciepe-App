@@ -5,13 +5,13 @@ class RecipesController < ApplicationController
   end
 
   def public
-    @recipes = Recipe.where(user_id: current_user.id,public:true).includes(:recipe_foods)
+    @recipes = Recipe.where(user_id: current_user.id, public: true).includes(:recipe_foods)
   end
 
   def new
     recipe = Recipe.new
     respond_to do |format|
-      format.html { render :new, locals:{ recipe:recipe }  }
+      format.html { render :new, locals: { recipe: } }
     end
   end
 
@@ -33,7 +33,8 @@ class RecipesController < ApplicationController
 
   def create
     @user = current_user
-    @recipe = Recipe.new(params.require(:new_recipe).permit(:name,:description,:preparation_time,:cooking_time,:public,:photo))
+    @recipe = Recipe.new(params.require(:new_recipe).permit(:name, :description, :preparation_time, :cooking_time, :public,
+                                                            :photo))
     @recipe.user = @user
     if @recipe.save
       flash[:notice] = 'Recipe created successfully!'
@@ -43,7 +44,7 @@ class RecipesController < ApplicationController
       puts "Error is in:  #{flash[:error]}"
       recipe = Recipe.new
       respond_to do |format|
-        format.html { redirect_to request.referrer, locals: { recipe:recipe }  }
+        format.html { redirect_to request.referrer, locals: { recipe: } }
       end
     end
   end
@@ -55,6 +56,6 @@ class RecipesController < ApplicationController
   end
 
   def recipe_params
-    params.require(:recipe).permit(:name, :preparation_time, :cooking_time, :description, :public,:photo)
+    params.require(:recipe).permit(:name, :preparation_time, :cooking_time, :description, :public, :photo)
   end
 end

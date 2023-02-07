@@ -20,16 +20,16 @@
 }
 
 .link-container {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .recipe-details-container {
-    position: relative;
-    width: 80%;
+  position: relative;
+  width: 80%;
 }
 
 .form-switch-container {
-    position: absolute;
-    top: 1em;
-    right: 2em;
+  position: absolute;
+  top: 1em;
+  right: 2em;
 }
