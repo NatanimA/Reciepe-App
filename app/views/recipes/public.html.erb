@@ -1,0 +1,8 @@
+<h2 class="text-center">Public Recipes</h2>
+
+    <% @recipes.each do |recipe|%>
+    <div class="card mb-3">
+        <%= render '/recipes/public',recipe: recipe  %>
+    </div>
+    <% end %>
+
