@@ -1,0 +1,25 @@
+
+<div class="container mt-4">
+    <h3 class="display-1 text-center">Foods</h3>
+    <hr>
+    <div class="btn-container">
+        <%= link_to new_food_path, class:"link-container" do %>
+            <button class="btn btn-success">Add Food</button>
+        <% end %>
+    </div>
+    <table class="table">
+    <thead>
+        <tr>
+        <th scope="col">#</th>
+        <th scope="col">Food</th>
+        <th scope="col">Measurement Unit</th>
+        <th scope="col">Unit Price</th>
+        <th scope="col">Action</th>
+    </thead>
+    <tbody>
+        <% @foods.each do |food| %>
+            <%= render food, details:false %>
+        <% end %>
+    </tbody>
+    </table>
+</div>

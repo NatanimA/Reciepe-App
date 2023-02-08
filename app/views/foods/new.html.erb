@@ -1,0 +1,50 @@
+<% if @recipe_id != nil %>
+<%= form_with model: food, method: :post, url: foods_path(@recipe_id) ,scope: :new_food, local:true do |form| %>
+<h3 class="display-3">Create Food</h3>
+    <hr>
+    <div class="mb-3">
+        <%= form.label :name,class:"form-label"%>
+        <%= form.text_field :name,class:"form-control", :required => true %>
+    </div>
+    <div class="mb-3">
+        <%= form.label :measurement_unit,class:"form-label"%>
+        <%= form.text_field :measurement_unit,in: 1.0..1000000.0 ,class:"form-control", :required => true %>
+    </div>
+    <div class="mb-3">
+        <%= form.label :price,class:"form-label"%>
+        <%= form.number_field :price,in: 1.0..1000000.0 ,class:"form-control", :required => true %>
+    </div>
+    <div class="mb-3">
+        <%= form.label :quantity,class:"form-label"%>
+        <%= form.number_field :quantity,in: 1.0..1000000.0, class:"form-control", :required => true %>
+    </div>
+    <div class="mb-3 text-center">
+        <%= form.submit "Add Food",disable_with:"Creating food...", class:"btn btn-success" %>
+    </div>
+<% end %>
+<% else %>
+<%= form_with model: food, method: :post, url: foods_path ,scope: :new_food, local:true do |form| %>
+<h3 class="display-3">Create Food</h3>
+    <hr>
+    <div class="mb-3">
+        <%= form.label :name,class:"form-label"%>
+        <%= form.text_field :name,class:"form-control", :required => true %>
+    </div>
+    <div class="mb-3">
+        <%= form.label :measurement_unit,class:"form-label"%>
+        <%= form.text_field :measurement_unit,in: 1.0..1000000.0 ,class:"form-control", :required => true %>
+    </div>
+    <div class="mb-3">
+        <%= form.label :price,class:"form-label"%>
+        <%= form.number_field :price,in: 1.0..1000000.0 ,class:"form-control", :required => true %>
+    </div>
+    <div class="mb-3">
+        <%= form.label :quantity,class:"form-label"%>
+        <%= form.number_field :quantity,in: 1.0..1000000.0, class:"form-control", :required => true %>
+    </div>
+    <div class="mb-3 text-center">
+        <%= form.submit "Add Food",disable_with:"Creating food...", class:"btn btn-success" %>
+    </div>
+<% end %>
+<% end %>
+
