@@ -21,12 +21,12 @@ class FoodsController < ApplicationController
         if @recipe_foods.save
           flash[:notice] = 'Ingredient created successfully!'
         else
-          flash[:error] = @recipe_foods.errors.full_messages.join(', ')
+          flash[:alert] = @recipe_foods.errors.full_messages.join(', ')
         end
         redirect_to recipe_path(id: recipe_id)
       end
     else
-      flash[:error] = @food.errors.full_messages.join(', ')
+      flash[:alert] = @food.errors.full_messages.join(', ')
       food = Food.new
       respond_to do |format|
         format.html { redirect_to request.referrer, locals: { food: } }
@@ -44,9 +44,15 @@ class FoodsController < ApplicationController
 
   def destroy
     if @food.destroy
-      redirect_to user_food_path(user_id: @food.user_id, id: @food.id), notice: 'Food was successfully deleted.'
+      flash[:notice] = 'Food was successfully deleted.'
+      respond_to do |format|
+        format.html { redirect_to request.referrer}
+      end
     else
-      redirect_to user_food_path(user_id: @food.user_id, id: @food.id), alert: 'Failed to delete food.'
+      flash[:alert] = 'Failed to delete food.'
+      respond_to do |format|
+        format.html { redirect_to request.referrer}
+      end
     end
   end
 
