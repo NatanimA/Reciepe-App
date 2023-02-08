@@ -9,18 +9,21 @@ class FoodsController < ApplicationController
     @user = current_user
     @food = @user.foods.build(food_params)
     if @food.valid?
-      @food.save
-      flash[:notice] = 'Food created successfully!'
-      redirect_to new_user_food_path(@user, @food)
+      if @food.save
+        flash[:notice] = 'Food created successfully!'
+        redirect_to new_user_food_path(@user, @food)
+      else
+        flash[:error] = @food.errors.full_messages.to_sentence
+      end
     else
-      flash[:error] = @food.errors.full_messages.join(', ')
+      flash[:error] = @food.errors.full_messages.to_sentence
       render :new
     end
   end
 
   def new
     @food = Food.new
-    @post.user = current_user
+    @food.user = current_user
   end
 
   def destroy

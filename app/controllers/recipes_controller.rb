@@ -1,7 +1,7 @@
 class RecipesController < ApplicationController
   before_action :set_recipe, only: %i[show destroy]
   def index
-    @recipes = Recipe.where(user_id: params[:user_id]).includes(:food)
+    @recipes = Recipe.where(user_id: params[:user_id]).includes(:user)
   end
 
   def new
