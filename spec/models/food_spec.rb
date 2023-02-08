@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Food, type: :model do
   let(:user) { FactoryBot.create(:user) }
-  let(:food) { FactoryBot.create(:food, user:) }
+  let(:food) { FactoryBot.create(:food, user:, price: 10.0) }
 
   it 'has a valid factory' do
     expect(food).to be_valid
@@ -25,7 +25,7 @@ RSpec.describe Food, type: :model do
 
   it 'has many recipe_foods' do
     FactoryBot.create(:recipe_food, food:)
-    expect(food.recipe_food.count).to eq(1)
+    expect(food.recipe_foods.count).to eq(1)
   end
 
   it 'belongs to a user' do

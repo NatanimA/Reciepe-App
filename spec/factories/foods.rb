@@ -3,6 +3,7 @@ FactoryBot.define do
     name { Faker::Food.dish[0, 15] }
     measurement_unit { %w[grams ml pieces].sample }
     quantity { Faker::Number.number(digits: 3) }
+    price { Faker::Commerce.price }
     user
   end
 end

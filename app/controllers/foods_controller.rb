@@ -5,32 +5,49 @@ class FoodsController < ApplicationController
     @foods = Food.where(user_id: current_user.id)
   end
 
-  def create
+  def create(*recipe_id)
     @user = current_user
-    @food = @user.foods.build(food_params)
-    if @food.valid?
-      if @food.save
-        flash[:notice] = 'Food created successfully!'
-        redirect_to new_user_food_path(@user, @food)
+    recipe_id = params[:format]
+    @food = Food.new(params.require(:new_food).permit(:name, :measurement_unit, :price, :quantity))
+    @food.user = @user
+    if @food.save
+      flash[:notice] = 'Food created successfully!'
+      if recipe_id.nil?
+        redirect_to root_path
       else
-        flash[:error] = @food.errors.full_messages.to_sentence
+        recipe_id = recipe_id.to_i
+        @recipe = Recipe.find(recipe_id)
+        @recipe_foods = RecipeFood.new(quantity: @food.quantity, food: @food, recipe: @recipe)
+        if @recipe_foods.save
+          flash[:notice] = 'Ingredient created successfully!'
+        else
+          flash[:error] = @recipe_foods.errors.full_messages.join(', ')
+        end
+        redirect_to recipe_path(id: recipe_id)
       end
     else
-      flash[:error] = @food.errors.full_messages.to_sentence
-      render :new
+      flash[:error] = @food.errors.full_messages.join(', ')
+      food = Food.new
+      respond_to do |format|
+        format.html { redirect_to request.referrer || new_food_path, locals: { food: food } }
+        # format.html { redirect_to request.referrer, locals: { food: food } }
+      end
     end
   end
 
   def new
     @food = Food.new
-    @food.user = current_user
+    @recipe_id = (params[:recipe_id] unless params[:recipe_id].nil?)
+    respond_to do |format|
+      format.html { render :new, locals: { food: @food } }
+    end
   end
 
   def destroy
     if @food.destroy
-      redirect_to user_food_path(user_id: @food.user_id, id: @food.id), notice: 'Food was successfully deleted.'
+      redirect_to food_path(id: @food.id), notice: 'Food was successfully deleted.'
     else
-      redirect_to user_food_path(user_id: @food.user_id, id: @food.id), alert: 'Failed to delete food.'
+      redirect_to food_path(id: @food.id), alert: 'Failed to delete food.'
     end
   end
 

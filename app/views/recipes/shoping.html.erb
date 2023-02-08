@@ -1,0 +1,29 @@
+<h3 class="display-5 text-center">Shopping List</h3>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between w-75 m-auto">
+        <p>Amount of items to buy: <strong><%= @recipe.recipe_foods.length %></strong> </p>
+        <% value = 0%>
+        <% @recipe.recipe_foods.each do |rsp| %>
+            <% value += rsp.food.price %>
+        <% end %>
+        <p>Total value of food needed: <strong><%= value %></strong> </p>
+    </div>
+    <table class="table table-striped-columns">
+  <thead>
+    <tr>
+      <th scope="col">Food</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @recipe.recipe_foods.each do |rsp| %>
+    <tr>
+      <td><%= rsp.food.name %></td>
+      <td><%= rsp.food.quantity %></td>
+      <td><%= rsp.food.price %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
