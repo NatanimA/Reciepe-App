@@ -26,14 +26,11 @@ class RecipesController < ApplicationController
   def destroy
     if @recipe.destroy
       flash[:notice] = 'Recipe was successfully deleted.'
-      respond_to do |format|
-        format.html { redirect_to request.referrer }
-      end
     else
       flash[:alert] = 'Failed to delete Recipe.'
-      respond_to do |format|
-        format.html { redirect_to request.referrer }
-      end
+    end
+    respond_to do |format|
+      format.html { redirect_to request.referrer }
     end
   end
 
