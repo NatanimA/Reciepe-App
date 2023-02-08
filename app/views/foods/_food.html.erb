@@ -7,10 +7,13 @@
       <td><%= food.measurement_unit%></td>
       <% end %>
       <td><%= food.price %></td>
-      <td>
-      <%= link_to "Delete", food_path(food.id),data: { turbo_method: :delete, turbo_confirm: "Are you sure?", turbo_confirm: "Are you sure?" },class:"btn btn-danger" %>
-      </td>
-      <% if details %>
-      <td><%= link_to "Modify" %></td>
+      <td><%= food.quantity %></td>
+      <% if can? :delete, food %>
+            <td>
+            <%= link_to "Delete", food_path(food.id),data: { turbo_method: :delete, turbo_confirm: "Are you sure?", turbo_confirm: "Are you sure?" },class:"btn btn-danger" %>
+            </td>
+            <% if details %>
+                  <td><%= link_to "Modify" %></td>
+            <% end %>
       <% end %>
 </tr>
