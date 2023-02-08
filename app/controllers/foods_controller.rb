@@ -1,4 +1,5 @@
 class FoodsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_food, only: %i[show destroy]
   # before_action :authorize_delete, only: [:destroy]
   def index
@@ -71,6 +72,6 @@ class FoodsController < ApplicationController
   end
 
   def food_params
-    params.require(:food).permit(:name, :measurement_unit, :price, :quantity)
+    params.require(:new_food).permit(:name, :measurement_unit, :price, :quantity)
   end
 end

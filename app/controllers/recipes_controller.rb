@@ -1,11 +1,14 @@
 class RecipesController < ApplicationController
+  load_and_authorize_resource
   before_action :set_recipe, only: %i[destroy]
+
+
   def index
     @recipes = Recipe.where(user_id: current_user.id).includes(:recipe_foods)
   end
 
   def public
-    @recipes = Recipe.where(user_id: current_user.id, public: true).includes(:recipe_foods)
+    @recipes = Recipe.where(public: true).includes(:recipe_foods)
   end
 
   def new
@@ -16,7 +19,7 @@ class RecipesController < ApplicationController
   end
 
   def show
-    @recipe = Recipe.where(user_id: current_user.id, id: params[:id]).includes(:recipe_foods).first
+    @recipe = Recipe.where(id: params[:id]).includes(:recipe_foods).first
   end
 
   def shoping
@@ -58,6 +61,6 @@ class RecipesController < ApplicationController
   end
 
   def recipe_params
-    params.require(:recipe).permit(:name, :preparation_time, :cooking_time, :description, :public, :photo)
+    params.require(:new_recipe).permit(:name, :preparation_time, :cooking_time, :description, :public, :photo)
   end
 end
