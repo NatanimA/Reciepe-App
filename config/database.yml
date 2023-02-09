@@ -60,10 +60,10 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: Reciepe_App_test
-  port: 5432
-  username: teejay
-  password: rojutet11
+  database: Reciepe_App_development
+  port: 5433
+  username: postgres
+  password: 12345678
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
