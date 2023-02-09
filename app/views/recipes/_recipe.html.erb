@@ -3,7 +3,9 @@
     <div class="card-body">
         <h5 class="card-title"><%= recipe.name %></h5>
         <p class="card-text"><%= recipe.description %></p>
-        <a href="#" class="btn btn-primary">Delete</a>
+        <% if can? :delete, recipe %>
+            <%= link_to "Delete", recipe_path(recipe.id),data: { turbo_method: :delete, turbo_confirm: "Are you sure?", turbo_confirm: "Are you sure?" },class:"btn btn-danger" %>
+        <% end %>
     </div>
 </div>
 <% end %>

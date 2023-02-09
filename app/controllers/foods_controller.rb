@@ -1,4 +1,5 @@
 class FoodsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_food, only: %i[show destroy]
   # before_action :authorize_delete, only: [:destroy]
   def index
@@ -21,15 +22,15 @@ class FoodsController < ApplicationController
         if @recipe_foods.save
           flash[:notice] = 'Ingredient created successfully!'
         else
-          flash[:error] = @recipe_foods.errors.full_messages.join(', ')
+          flash[:alert] = @recipe_foods.errors.full_messages.join(', ')
         end
         redirect_to recipe_path(id: recipe_id)
       end
     else
-      flash[:error] = @food.errors.full_messages.join(', ')
+      flash[:alert] = @food.errors.full_messages.join(', ')
       food = Food.new
       respond_to do |format|
-        format.html { redirect_to request.referrer || new_food_path, locals: { food: food } }
+        format.html { redirect_to request.referrer || new_food_path, locals: { food: } }
         # format.html { redirect_to request.referrer, locals: { food: food } }
       end
     end
@@ -45,9 +46,12 @@ class FoodsController < ApplicationController
 
   def destroy
     if @food.destroy
-      redirect_to food_path(id: @food.id), notice: 'Food was successfully deleted.'
+      flash[:notice] = 'Food was successfully deleted.'
     else
-      redirect_to food_path(id: @food.id), alert: 'Failed to delete food.'
+      flash[:alert] = 'Failed to delete food.'
+    end
+    respond_to do |format|
+      format.html { redirect_to request.referrer }
     end
   end
 
@@ -69,6 +73,6 @@ class FoodsController < ApplicationController
   end
 
   def food_params
-    params.require(:food).permit(:name, :measurement_unit, :price, :quantity)
+    params.require(:new_food).permit(:name, :measurement_unit, :price, :quantity)
   end
 end

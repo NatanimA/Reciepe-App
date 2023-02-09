@@ -1,11 +1,13 @@
 class RecipesController < ApplicationController
+  load_and_authorize_resource
   before_action :set_recipe, only: %i[destroy]
+
   def index
     @recipes = Recipe.where(user_id: current_user.id).includes(:recipe_foods)
   end
 
   def public
-    @recipes = Recipe.where(user_id: current_user.id, public: true).includes(:recipe_foods)
+    @recipes = Recipe.where(public: true).includes(:recipe_foods)
   end
 
   def new
@@ -16,7 +18,7 @@ class RecipesController < ApplicationController
   end
 
   def show
-    @recipe = Recipe.where(user_id: current_user.id, id: params[:id]).includes(:recipe_foods).first
+    @recipe = Recipe.where(id: params[:id]).includes(:recipe_foods).first
   end
 
   def shoping
@@ -25,9 +27,12 @@ class RecipesController < ApplicationController
 
   def destroy
     if @recipe.destroy
-      redirect_to recipe_path(id: @recipe.id), notice: 'Food was successfully deleted.'
+      flash[:notice] = 'Recipe was successfully deleted.'
     else
-      redirect_to recipe_path(id: @recipe.id), alert: 'Failed to delete food.'
+      flash[:alert] = 'Failed to delete Recipe.'
+    end
+    respond_to do |format|
+      format.html { redirect_to request.referrer }
     end
   end
 
@@ -40,8 +45,7 @@ class RecipesController < ApplicationController
       flash[:notice] = 'Recipe created successfully!'
       redirect_to recipes_path
     else
-      flash[:error] = @recipe.errors.full_messages.join(', ')
-      puts "Error is in:  #{flash[:error]}"
+      flash[:alert] = @recipe.errors.full_messages.join(', ')
       recipe = Recipe.new
       respond_to do |format|
         format.html { redirect_to request.referrer, locals: { recipe: } }
@@ -56,6 +60,6 @@ class RecipesController < ApplicationController
   end
 
   def recipe_params
-    params.require(:recipe).permit(:name, :preparation_time, :cooking_time, :description, :public, :photo)
+    params.require(:new_recipe).permit(:name, :preparation_time, :cooking_time, :description, :public, :photo)
   end
 end

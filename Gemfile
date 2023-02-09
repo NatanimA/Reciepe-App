@@ -8,6 +8,12 @@ gem 'rubocop', '>= 1.0', '< 2.0'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.4'
 
+# Gem Devise for Authentications
+gem 'devise'
+
+# Gem Cancan For Authorizations
+gem 'cancancan'
+
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem 'sprockets-rails'
 
@@ -52,7 +58,7 @@ gem 'bootsnap', require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem 'debug', platforms: %i[mri mingw x64_mingw]
+  gem 'debug'
   gem 'factory_bot'
   gem 'factory_bot_rails'
   gem 'faker'
@@ -75,6 +81,7 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem 'capybara'
   gem 'selenium-webdriver'
+  gem 'shoulda-matchers', '~> 5.0'
   gem 'webdrivers'
 end
 
