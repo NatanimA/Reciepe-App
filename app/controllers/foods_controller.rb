@@ -30,16 +30,17 @@ class FoodsController < ApplicationController
       flash[:alert] = @food.errors.full_messages.join(', ')
       food = Food.new
       respond_to do |format|
-        format.html { redirect_to request.referrer, locals: { food: } }
+        format.html { redirect_to request.referrer || new_food_path, locals: { food: } }
+        # format.html { redirect_to request.referrer, locals: { food: food } }
       end
     end
   end
 
   def new
-    food = Food.new
+    @food = Food.new
     @recipe_id = (params[:recipe_id] unless params[:recipe_id].nil?)
     respond_to do |format|
-      format.html { render :new, locals: { food: } }
+      format.html { render :new, locals: { food: @food } }
     end
   end
 
