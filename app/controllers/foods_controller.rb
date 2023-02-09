@@ -29,7 +29,7 @@ class FoodsController < ApplicationController
     else
       flash[:alert] = @food.errors.full_messages.join(', ')
       food = Food.new
-      redirect_to new_food_path, locals: { food: food }
+      redirect_to new_food_path, locals: { food: }
     end
   end
 
