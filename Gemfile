@@ -8,6 +8,9 @@ gem 'rubocop', '>= 1.0', '< 2.0'
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.0.4'
 
+# N+1 queies fixer
+gem 'bullet', group: 'development'
+
 # Gem Devise for Authentications
 gem 'devise'
 

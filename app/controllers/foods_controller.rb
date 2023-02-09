@@ -29,10 +29,7 @@ class FoodsController < ApplicationController
     else
       flash[:alert] = @food.errors.full_messages.join(', ')
       food = Food.new
-      respond_to do |format|
-        format.html { redirect_to request.referrer || new_food_path, locals: { food: } }
-        # format.html { redirect_to request.referrer, locals: { food: food } }
-      end
+      redirect_to new_food_path, locals: { food: food }
     end
   end
 
