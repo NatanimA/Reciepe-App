@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+# spec/features/recipes_spec.rb
+
+>>>>>>> 9a2538d (Add integrations specs)
 require 'rails_helper'
 
 RSpec.describe RecipesController, type: :feature do
