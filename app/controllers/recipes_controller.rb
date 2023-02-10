@@ -44,7 +44,7 @@ class RecipesController < ApplicationController
       redirect_to recipes_path
     else
       flash[:alert] = @recipe.errors.full_messages.join(', ')
-      redirect_to new_recipe_path , locals: { recipe:@recipe }
+      redirect_to new_recipe_path, locals: { recipe: @recipe }
     end
   end
 
