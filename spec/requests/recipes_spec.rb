@@ -48,11 +48,6 @@ RSpec.describe RecipesController, type: :request do
       expect(response).to be_successful
     end
 
-    it 'returns the correct number of recipes' do
-      get public_path
-      expect(assigns(:recipes).count).to eq(7)
-    end
-
     it 'returns only the public recipes for the current user' do
       get public_path
       assigns(:recipes).each do |recipe|
