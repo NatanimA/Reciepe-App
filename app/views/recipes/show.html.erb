@@ -1,0 +1,52 @@
+<h3 class="display-3 text-center"><%= @recipe.name %></h3>
+<hr>
+<div class="container">
+<div class="row recipe-details-container mt-4">
+    <div class="col">
+        <p>Preparation time:<strong>1 hour</strong> </p>
+        <p>Cooking Time:<strong>1.5hour</strong></p>
+        <div>
+            <p>Steps goes here</p>
+            <ul>
+                <li></li>
+            </ul>
+        </div>
+        <div class="btn-container text-center">
+            <%= link_to  shoping_path(@recipe.id), class:"link-container" do %>
+                <button class="btn btn-primary m-4">Generate shopping list</button>
+            <% end %>
+            <% if @recipe.user_id == current_user.id%>
+                <%= link_to   new_recipe_food_path(@recipe.id), class:"link-container" do %>
+                    <button class="btn btn-success m-4">Add Ingredient </button>
+                <% end %>
+            <% end %>
+        <div>
+    </div>
+    <div class="col form-check form-switch form-switch-container">
+         <% if @recipe.public%>
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked disabled>
+         <% else %>
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" disabled>
+         <% end %>
+        <label class="form-check-label" for="flexSwitchCheckChecked">Public</label>
+    </div>
+</div>
+</div>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Food</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Value</th>
+      <th scope="col">Action</th>
+  </thead>
+  <tbody>
+    <% @recipe.recipe_foods.each do |recipe_food| %>
+        <%= render recipe_food.food, details: true %>
+    <% end %>
+  </tbody>
+</table>
+

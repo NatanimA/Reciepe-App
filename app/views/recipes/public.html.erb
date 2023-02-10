@@ -1,0 +1,9 @@
+<h2 class="text-center">Public Recipes</h2>
+
+        <div class="row">
+            <% @recipes.each do |recipe|%>
+                    <%= render '/recipes/public',recipe: recipe  %>
+            <% end %>
+        </div>
+
+

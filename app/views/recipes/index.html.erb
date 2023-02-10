@@ -1,0 +1,11 @@
+<div class="container mt-4">
+    <h3 class="display-5 text-center">Recipes</h3>
+    <hr>
+     <%= link_to   new_recipe_path, class:"link-container" do %>
+                <button class="btn btn-success m-4">Add Recipes </button>
+    <% end %>
+        <% @recipes.each do |recipe| %>
+            <%= render recipe %>
+        <% end %>
+
+</div>
