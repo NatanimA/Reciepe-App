@@ -12,9 +12,7 @@ class RecipesController < ApplicationController
 
   def new
     recipe = Recipe.new
-    respond_to do |format|
-      format.html { render :new, locals: { recipe: } }
-    end
+    render :new, locals: { recipe: }
   end
 
   def show
@@ -46,10 +44,7 @@ class RecipesController < ApplicationController
       redirect_to recipes_path
     else
       flash[:alert] = @recipe.errors.full_messages.join(', ')
-      recipe = Recipe.new
-      respond_to do |format|
-        format.html { redirect_to request.referrer, locals: { recipe: } }
-      end
+      redirect_to new_recipe_path , locals: { recipe:@recipe }
     end
   end
 

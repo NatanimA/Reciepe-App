@@ -1,7 +1,6 @@
 class FoodsController < ApplicationController
   load_and_authorize_resource
   before_action :set_food, only: %i[show destroy]
-  # before_action :authorize_delete, only: [:destroy]
   def index
     @foods = Food.where(user_id: current_user.id)
   end
@@ -28,9 +27,7 @@ class FoodsController < ApplicationController
       end
     else
       flash[:alert] = @food.errors.full_messages.join(', ')
-      food = Food.new
-      # format.html { redirect_to request.referrer, locals: { food: food } }
-      redirect_to new_food_path, locals: { food: }
+      redirect_to new_food_path, locals: { food:@food }
     end
   end
 
