@@ -3,7 +3,7 @@ class RecipesController < ApplicationController
   before_action :set_recipe, only: %i[destroy]
 
   def index
-    @recipes = Recipe.where(user_id: current_user.id)
+    @recipes = Recipe.where(user_id: current_user.id).includes(:recipe_foods)
   end
 
   def public
